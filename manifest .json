@@ -2,11 +2,25 @@
   "background_color": "#ffffff",
   "dir": "ltr",
   "display": "standalone",
-  "name": "نور الاسلام",
+  "name": "نور الإسلام",
   "orientation": "any",
   "scope": "/",
-  "short_name": "نور الاسلام",
+  "short_name": "نور الإسلام",
   "start_url": "/",
   "theme_color": "#ffffff",
-  "description": "تطبيق نور الإسلام هو منصتك الإيمانية الشاملة التي تتيح لك الوصول إلى المحتوى الديني والأذكار والخدمات الإيمانية في أي وقت وأي مكان، بتصميم بسيط وسهل الاستخدام وبدون إعلانات مزعجة."
+  "description": "تطبيق نور الإسلام هو منصتك الإيمانية الشاملة التي تتيح لك الوصول إلى المحتوى الديني والأذكار والخدمات الإيمانية في أي وقت وأي مكان، بتصميم بسيط وسهل الاستخدام وبدون إعلانات مزعجة",
+  "icons": [
+    {
+      "src": "android/android-launchericon-192-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "android/android-launchericon-512-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
