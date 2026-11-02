@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="light">
+<head>
+    <meta name="google-site-verification" content="7enXl7aAnbGSs1LSEMJmT5j-OvtWYVDzIwoQ5KDs4oc" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نور الإسلام | المنصة الإيمانية الشاملة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        islamic: { 
+                            green: '#064e3b', 
+                            lightgreen: '#047857',
+                            gold: '#d97706', 
+                            brightgold: '#fbbf24',
+                            light: '#f0fdf4', 
+                            dark: '#022c22'
+                        }
+                    },
+                    fontFamily: { 
+                        cairo: ['Cairo', 'sans-serif'], 
+                        amiri: ['Amiri', 'serif'], 
+                        mushaf: ['KFGQPC', 'Amiri', 'serif'] 
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @font-face {
+            font-family: 'KFGQPC';
+            src: url('https://cdn.jsdelivr.net/npm/quran-font@1.1.2/dist/fonts/hafs.woff2') format('woff2');
+            font-weight: normal; font-style: normal; font-display: swap;
+        }
+
+        body { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; transition: background-color 0.4s, color 0.4s; }
+        .amiri-text { font-family: 'Amiri', serif; }
+        .mushaf-text { font-family: 'KFGQPC', 'Amiri', serif; line-height: 2.6; }
+
+        .section-hidden { display: none; opacity: 0; }
+        .section-active { display: block; animation: fadeIn 0.4s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .bg-pattern { 
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23064e3b' fill-opacity='0.035'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); 
+        }
+        .dark .bg-pattern { 
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fbbf24' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); 
+        }
+        
+        .ayah-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; margin: 0 8px;
+            background: linear-gradient(135deg, #fdfbf7, #fdf3c3); border: 2px solid #d97706; border-radius: 50%;
+            color: #064e3b; font-size: 1.1rem; font-family: 'KFGQPC', serif; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.1); vertical-align: middle;
+        }
+        .dark .ayah-number { background: linear-gradient(135deg, #1f2937, #374151); color: #fbbf24; border-color: #fbbf24; }
+        .ayah-number::before { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px dashed #d97706; border-radius: 50%; }
+        .dark .ayah-number::before { border-color: #fbbf24; }
+        .ayah-number span { position: relative; z-index: 1; top: 2px; }
+
+        .compass-bg { width: 280px; height: 280px; border-radius: 50%; border: 8px solid #064e3b; position: relative; margin: 0 auto; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .dark .compass-bg { background: #1e293b; border-color: #d97706; }
+        .compass-bg::after { content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 2px dashed #d97706; border-radius: 50%; opacity: 0.5; }
+        .kaaba-pointer { position: absolute; top: 25px; left: 50%; width: 4px; height: 115px; background-color: #064e3b; transform-origin: bottom center; transform: translateX(-50%) rotate(0deg); transition: transform 0.5s ease-out; z-index: 10; }
+        .dark .kaaba-pointer { background-color: #fbbf24; }
+        .kaaba-pointer::before { content: ''; position: absolute; top: -40px; left: -20px; width: 40px; height: 40px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23111' d='M15 15 h70 v70 h-70 z'/%3E%3Cpath fill='%23d4af37' d='M15 35 h70 v15 h-70 z'/%3E%3Cpath fill='%23d4af37' d='M15 15 h70 v5 h-70 z'/%3E%3Cpath fill='%23d4af37' d='M42 50 h16 v35 h-16 z'/%3E%3Cpath fill='%23111' d='M45 55 h10 v30 h-10 z'/%3E%3C/svg%3E") no-repeat center center; background-size: contain; }
+
+        .dhikr-card { transition: all 0.3s ease; }
+        .dhikr-done { opacity: 0.4; transform: scale(0.97); pointer-events: none; filter: grayscale(0.8); }
+        
+        .sebha-btn { background: radial-gradient(circle, #064e3b 0%, #022c22 100%); box-shadow: 0 10px 25px rgba(6, 78, 59, 0.4); transition: all 0.15s ease; }
+        .sebha-btn:active { transform: scale(0.92); }
+        .dark .sebha-btn { background: radial-gradient(circle, #d97706 0%, #92400e 100%); box-shadow: 0 10px 25px rgba(217, 119, 6, 0.4); }
+
+        .prayer-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,253,244,0.6));
+            backdrop-filter: blur(8px);
+        }
+        .dark .prayer-card {
+            background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.8));
+        }
+        .prayer-card-active {
+            border-color: #d97706 !important;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(217, 119, 6, 0.25);
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%) !important;
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-slate-950 bg-pattern text-gray-800 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <div id="welcome-screen" role="dialog" aria-modal="true" aria-label="مرحباً بك" style="position:fixed;inset:0;z-index:9999;background:#022c22;color:white;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px;gap:24px">
+        <h1 class="amiri-text" style="font-size:clamp(2rem,7vw,4rem);color:#fbbf24">اللهم صل وسلم على نبينا محمد</h1>
+        <p>صلّ على رسول الله ﷺ ثم ادخل إلى الموقع</p>
+        <button id="welcome-enter" style="background:#d97706;color:#022c22;border-radius:12px;padding:14px 32px;font-weight:bold">ادخل إلى الموقع</button>
+    </div>
+    <!-- شريط التقويم الهجري -->
+    <div class="bg-islamic-dark text-islamic-gold text-center py-2 text-xs md:text-sm font-bold shadow-md relative z-50 flex justify-center items-center gap-3 border-b border-islamic-gold/30">
+        <i class="fas fa-calendar-alt text-islamic-brightgold animate-pulse"></i> 
+        <span id="hijri-date-top">جاري تحميل التقويم الهجري...</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-islamic-green dark:bg-slate-900 text-white shadow-xl sticky top-0 z-40 border-b-2 border-islamic-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-10 h-10 rounded-full bg-islamic-gold/20 flex items-center justify-center border border-islamic-gold">
+                        <i class="fas fa-moon text-islamic-brightgold text-xl"></i>
+                    </div>
+                    <span class="font-black text-2xl md:text-3xl text-islamic-brightgold amiri-text tracking-wide">نور الإسلام</span>
+                </div>
+                
+                <div class="hidden lg:flex flex-1 justify-center overflow-x-auto scroll-hide mx-6">
+                    <div class="flex items-center space-x-1 space-x-reverse whitespace-nowrap">
+                        <button onclick="switchTab('home')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark hover:text-islamic-brightgold">الرئيسية</button>
+                        <button onclick="switchTab('quran')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark text-islamic-brightgold">المصحف الشريف</button>
+                        <button onclick="switchTab('hadith')" class="px-4 py-2.5 rounded-xl font-bold">الأحاديث النبوية</button>
+                        <button onclick="switchTab('adhkar')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark hover:text-islamic-brightgold">موسوعة الأذكار</button>
+                        <button onclick="switchTab('ruqyah')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark hover:text-islamic-brightgold">الرقية الشرعية</button>
+                        <button onclick="switchTab('habits')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark hover:text-islamic-brightgold">الورد اليومي</button>
+                        <button onclick="switchTab('sebha')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark hover:text-islamic-brightgold">السبحة</button>
+                        <button onclick="switchTab('names')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark hover:text-islamic-brightgold">أسماء الله الحسنى (99)</button>
+                        <button onclick="switchTab('prayer')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark hover:text-islamic-brightgold">المواقيت</button>
+                        <button onclick="switchTab('qibla')" class="px-4 py-2.5 rounded-xl font-bold transition-all hover:bg-islamic-dark hover:text-islamic-brightgold">اتجاه القبلة (GPS)</button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-xl bg-islamic-dark dark:bg-slate-800 text-islamic-brightgold flex items-center justify-center border border-islamic-gold/40">
+                        <i id="theme-icon" class="fas fa-sun text-lg"></i>
+                    </button>
+                    <div class="lg:hidden flex items-center">
+                        <button id="mobile-menu-btn" class="text-white text-2xl p-2">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden lg:hidden bg-islamic-dark border-t border-islamic-gold max-h-96 overflow-y-auto">
+            <div class="px-4 pt-3 pb-4 space-y-2 text-right"><button onclick="switchTab('hadith')" class="block w-full py-2 px-3 text-white font-bold">الأحاديث النبوية</button>
+                <button onclick="switchTab('home')" class="block w-full py-2 px-3 text-white font-bold">الرئيسية</button>
+                <button onclick="switchTab('quran')" class="block w-full py-2 px-3 text-islamic-brightgold font-bold">المصحف الشريف</button>
+                <button onclick="switchTab('adhkar')" class="block w-full py-2 px-3 text-white font-bold">موسوعة الأذكار</button>
+                <button onclick="switchTab('ruqyah')" class="block w-full py-2 px-3 text-white font-bold">الرقية الشرعية</button>
+                <button onclick="switchTab('habits')" class="block w-full py-2 px-3 text-white font-bold">الورد اليومي</button>
+                <button onclick="switchTab('sebha')" class="block w-full py-2 px-3 text-white font-bold">السبحة الإلكترونية</button>
+                <button onclick="switchTab('names')" class="block w-full py-2 px-3 text-white font-bold">أسماء الله الحسنى (99)</button>
+                <button onclick="switchTab('prayer')" class="block w-full py-2 px-3 text-white font-bold">مواقيت الصلاة</button>
+                <button onclick="switchTab('qibla')" class="block w-full py-2 px-3 text-white font-bold">اتجاه القبلة (GPS)</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <!-- 1. Home Section -->
+        <section id="home" class="content-section section-active">
+            <div class="text-center bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 md:p-12 border-t-8 border-islamic-gold relative overflow-hidden mb-8">
+                <h1 class="text-4xl md:text-6xl font-black text-islamic-green dark:text-islamic-brightgold mb-4 amiri-text">منصة نور الإسلام</h1>
+                <p class="text-lg md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto font-semibold">بوابتك الإيمانية المتقنة لتلاوات القرآن، موسوعة الأذكار الشاملة، والرقية الشرعية المباشرة.</p>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 relative z-10 mb-8">
+                    <button onclick="switchTab('quran')" class="p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl hover:shadow-xl transition text-islamic-green dark:text-white font-bold text-lg border border-islamic-green/20"><i class="fas fa-quran text-4xl mb-3 block text-islamic-gold"></i>المصحف الشريف</button>
+                    <button onclick="switchTab('adhkar')" class="p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl hover:shadow-xl transition text-islamic-green dark:text-white font-bold text-lg border border-islamic-green/20"><i class="fas fa-hands-praying text-4xl mb-3 block text-islamic-gold"></i>موسوعة الأذكار</button>
+                    <button onclick="switchTab('ruqyah')" class="p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl hover:shadow-xl transition text-islamic-green dark:text-white font-bold text-lg border border-islamic-green/20"><i class="fas fa-shield-alt text-4xl mb-3 block text-islamic-gold"></i>الرقية الشرعية</button>
+                    <button onclick="switchTab('habits')" class="p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl hover:shadow-xl transition text-islamic-green dark:text-white font-bold text-lg border border-islamic-green/20"><i class="fas fa-tasks text-4xl mb-3 block text-islamic-gold"></i>الورد اليومي</button>
+                    <button onclick="switchTab('sebha')" class="p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl hover:shadow-xl transition text-islamic-green dark:text-white font-bold text-lg border border-islamic-green/20"><i class="fas fa-beads text-4xl mb-3 block text-islamic-gold"></i>السبحة الإلكترونية</button>
+                    <button onclick="switchTab('names')" class="p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl hover:shadow-xl transition text-islamic-green dark:text-white font-bold text-lg border border-islamic-green/20"><i class="fas fa-star-and-crescent text-4xl mb-3 block text-islamic-gold"></i>أسماء الله الحسنى</button>
+                    <button onclick="switchTab('prayer')" class="p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl hover:shadow-xl transition text-islamic-green dark:text-white font-bold text-lg border border-islamic-green/20"><i class="fas fa-clock text-4xl mb-3 block text-islamic-gold"></i>مواقيت الصلاة</button>
+                    <button onclick="switchTab('qibla')" class="p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl hover:shadow-xl transition text-islamic-green dark:text-white font-bold text-lg border border-islamic-green/20"><i class="fas fa-compass text-4xl mb-3 block text-islamic-gold"></i>القبلة بـ GPS</button>
+                </div>
+
+                <!-- بطاقة السبحة الإلكترونية بالصفحة الرئيسية مع صورة وصوت -->
+                <div class="max-w-2xl mx-auto bg-gradient-to-r from-islamic-green to-islamic-dark text-white rounded-3xl p-6 md:p-8 shadow-2xl border-2 border-islamic-gold flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+                    <div class="w-32 h-32 md:w-40 md:h-40 flex-shrink-0 rounded-2xl overflow-hidden border-2 border-islamic-brightgold shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=400&auto=format&fit=crop" alt="السبحة الإلكترونية" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow text-center md:text-right">
+                        <h3 class="text-2xl font-bold text-islamic-brightgold mb-2 amiri-text">السبحة الإلكترونية السريعة</h3>
+                        <p class="text-sm text-gray-200 mb-4 font-semibold">سبّح واستشعر الأجر مع صوت التكبير والتسبيح عند كل ضغطة.</p>
+                        <div class="flex items-center justify-center md:justify-start gap-4">
+                            <span id="home-sebha-counter" class="text-4xl font-mono font-black text-islamic-brightgold bg-slate-900/80 px-4 py-2 rounded-xl border border-islamic-gold">0</span>
+                            <button onclick="countSebha()" class="px-8 py-3 bg-islamic-gold hover:bg-amber-600 text-slate-950 font-black rounded-xl shadow-lg transition-all border border-islamic-brightgold text-lg flex items-center gap-2">
+                                <i class="fas fa-[#beads]"></i> سبّح الآن
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 mb-6 rounded-2xl bg-islamic-green text-white"><h3 class="text-2xl font-bold">إذاعة القرآن الكريم من القاهرة</h3><p class="mt-2">اختر إذاعة القرآن الكريم من القاهرة في المشغّل أدناه؛ القنوات الأخرى مستقلة. لو لم يعمل البث، افتح صفحة الهيئة الوطنية للإعلام.</p><a class="inline-block mt-4 text-islamic-brightgold underline" target="_blank" rel="noopener noreferrer" href="https://www.maspero.eg/stream/7">فتح البث الرسمي لإذاعة القرآن الكريم من القاهرة ↗</a></div>
+                <!-- البث المباشر الموحد -->
+                <div class="p-8 bg-gradient-to-r from-islamic-dark to-slate-900 rounded-2xl text-white font-bold flex flex-col justify-center items-center shadow-xl border-2 border-islamic-gold">
+                    <div class="flex flex-col sm:flex-row items-center gap-4 mb-4 w-full max-w-xl justify-center">
+                        <i class="fas fa-broadcast-tower text-4xl text-islamic-brightgold animate-pulse"></i>
+                        <select id="radio-station" class="bg-slate-800 border-2 border-islamic-gold text-white text-lg rounded-xl p-3 focus:outline-none w-full font-bold" onchange="changeRadio()">
+                            <option value="https://stream.radiojar.com/8s5u5tpdtwzuv">إذاعة القرآن الكريم من القاهرة — مصر</option>
+                            <option value="https://Qurango.net/radio/tarateel">تلاوات قرآنية مباشرة (قناة مستقلة)</option>
+                            <option value="https://Qurango.net/radio/roqiah">إذاعة الرقية الشرعية (بث مباشر)</option>
+                            <option value="https://Qurango.net/radio/tafseer">إذاعة تفسير القرآن الكريم (بث مباشر)</option>
+                            <option value="https://Qurango.net/radio/fatwa">إذاعة الفتاوى الشرعية (بث مباشر)</option>
+                        </select>
+                    </div>
+                    <audio id="global-radio" controls class="w-full max-w-xl h-12 outline-none rounded-xl" preload="none">
+                        <source src="https://stream.radiojar.com/8s5u5tpdtwzuv" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-l from-islamic-dark to-slate-900 text-white rounded-3xl shadow-2xl p-8 border-r-8 border-islamic-gold">
+                <h3 class="text-2xl font-bold mb-4 text-islamic-brightgold flex items-center gap-2"><i class="fas fa-star-and-crescent text-islamic-gold"></i> دعاء اليوم</h3>
+                <p id="daily-doaa" class="text-2xl md:text-3xl amiri-text leading-relaxed text-center py-4 font-bold">جاري تحميل الدعاء...</p>
+            </div>
+        </section>
+
+        <!-- 2. Quran Section -->
+        <section id="quran" class="content-section section-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-6 md:p-8 border-t-8 border-islamic-green">
+                <h2 class="text-3xl md:text-4xl font-bold text-islamic-green dark:text-islamic-brightgold mb-6 text-center amiri-text">المصحف الشريف (تسجيلات قرآنية + بث مباشر)</h2>
+                
+                <div class="flex justify-center gap-4 mb-8">
+                    <button id="quran-mode-rec" onclick="setQuranMode('recorded')" class="px-8 py-3 bg-islamic-green text-white font-bold rounded-2xl shadow-lg border-2 border-islamic-green"><i class="fas fa-file-audio ml-2"></i>التسجيلات القرآنية</button>
+                    <button id="quran-mode-live" onclick="setQuranMode('live')" class="px-8 py-3 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 font-bold rounded-2xl shadow"><i class="fas fa-broadcast-tower ml-2"></i>إذاعات البث المباشر 24/7</button>
+                </div>
+
+                <div id="quran-rec-controls" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-300">اختر القارئ:</label>
+                        <select id="reciter-select" class="p-3.5 w-full border-2 border-islamic-gold rounded-2xl font-bold text-base text-center bg-islamic-light dark:bg-slate-800 dark:text-islamic-brightgold" onchange="updateAudio()">
+                            <option value="mishary">الشيخ مشاري راشد العفاسي (مرتل)</option><option value="ahmad_nu">الشيخ أحمد نعينع</option><option value="refat">الشيخ محمد رفعت</option><option value="bna">الشيخ محمود علي البنا</option><option value="husr">الشيخ محمود خليل الحصري (مرتل)</option>
+                            <option value="minsh">الشيخ محمد صديق المنشاوي (مرتل)</option>
+                            <option value="minsh_mjwd">الشيخ محمد صديق المنشاوي (مجود)</option>
+                            <option value="basit">الشيخ عبد الباسط عبد الصمد (مرتل)</option>
+                            <option value="basit_mjwd">الشيخ عبد الباسط عبد الصمد (مجود)</option>
+                            <option value="mustafa">الشيخ مصطفى إسماعيل (مجود)</option>
+                            <option value="sds">الشيخ عبد الرحمن السديس</option>
+                            <option value="maher">الشيخ ماهر المعيقلي</option>
+                            <option value="shur">الشيخ سعود الشريم</option>
+                            <option value="yasser">الشيخ ياسر الدوسري</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-300">السورة المباركة:</label>
+                        <select id="surah-select" class="p-3.5 w-full border-2 border-islamic-green rounded-2xl font-bold text-base text-center bg-islamic-light dark:bg-slate-800 dark:text-white" onchange="fetchSurah(this.value)"></select>
+                    </div>
+                </div>
+
+                <div id="quran-live-controls" class="hidden mb-6 text-center">
+                    <label class="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-300">اختر قناة البث المباشر للقرآن الكريم:</label>
+                    <select id="quran-live-select" class="p-4 w-full md:w-2/3 border-2 border-islamic-gold rounded-2xl font-bold text-base text-center bg-islamic-light dark:bg-slate-800 dark:text-islamic-brightgold" onchange="playQuranLive()">
+                        <option value="https://stream.radiojar.com/8s5u5tpdtwzuv">إذاعة القرآن الكريم من القاهرة — مصر</option>
+                            <option value="https://Qurango.net/radio/tarateel">تلاوات قرآنية مباشرة (قناة مستقلة)</option>
+                        <option value="https://Qurango.net/radio/mix">إذاعة تلاوات خاشعة متنوّعة</option>
+                        <option value="https://Qurango.net/radio/tafseer">إذاعة تفسير القرآن الكريم</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-center mb-6">
+                    <button id="auto-scroll-btn" onclick="toggleAutoScroll()" class="px-8 py-2.5 bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-white rounded-xl font-bold">
+                        <i class="fas fa-arrow-down ml-2"></i> قراءة تلقائية
+                    </button>
+                </div>
+
+                <div id="quran-audio-status" class="text-center font-bold text-sm text-islamic-gold mb-4 min-h-[20px]"></div>
+
+                <div class="mb-8 w-full max-w-3xl mx-auto bg-gradient-to-r from-islamic-dark to-slate-900 p-6 rounded-2xl shadow-xl flex flex-col items-center border border-islamic-gold">
+                    <h4 class="text-islamic-brightgold font-bold mb-3"><i class="fas fa-headphones-alt ml-2"></i>مشغل القرآن الكريم</h4>
+                    <audio id="quran-player" controls class="w-full h-12 outline-none rounded-xl"></audio>
+                </div>
+
+                <div id="quran-content" class="bg-[#fdfbf7] dark:bg-slate-900 p-6 md:p-12 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-inner text-center">
+                    <h3 id="surah-name" class="text-4xl font-bold text-islamic-green dark:text-islamic-brightgold mb-4 mushaf-text"></h3>
+                    <div id="bismillah" class="text-3xl text-islamic-gold mb-8 mushaf-text">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+                    <div id="ayahs-container" class="mushaf-text text-3xl md:text-4xl text-gray-800 dark:text-gray-100 text-justify" style="direction: rtl;">
+                        اختر السورة لعرض النص القرآني.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Adhkar Section -->
+        <section id="adhkar" class="content-section section-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-6 md:p-8 border-t-8 border-islamic-gold">
+                <h2 class="text-3xl md:text-4xl font-bold text-islamic-green dark:text-islamic-brightgold mb-6 text-center amiri-text">موسوعة الأذكار والتحصينات الشاملة</h2>
+                
+                <div class="flex flex-wrap justify-center gap-3 mb-8">
+                    <button onclick="renderAdhkar('morning')" class="bg-islamic-green dark:bg-islamic-gold text-white dark:text-slate-900 px-5 py-2.5 rounded-xl font-bold shadow">أذكار الصباح</button>
+                    <button onclick="renderAdhkar('evening')" class="bg-islamic-dark dark:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-bold shadow border border-slate-700">أذكار المساء</button>
+                    <button onclick="renderAdhkar('post_prayer')" class="bg-teal-700 text-white px-5 py-2.5 rounded-xl font-bold shadow">أذكار بعد الصلاة</button>
+                    <button onclick="renderAdhkar('sleep')" class="bg-blue-800 dark:bg-blue-900 text-white px-5 py-2.5 rounded-xl font-bold shadow">أذكار النوم</button>
+                    <button onclick="renderAdhkar('wake')" class="bg-amber-600 text-white px-5 py-2.5 rounded-xl font-bold shadow">أذكار الاستيقاظ</button>
+                    <button onclick="renderAdhkar('azan')" class="bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold shadow">أذكار الأذان</button>
+                    <button onclick="renderAdhkar('mosque')" class="bg-emerald-800 text-white px-5 py-2.5 rounded-xl font-bold shadow">أذكار المسجد</button>
+                    <button onclick="renderAdhkar('food')" class="bg-yellow-700 text-white px-5 py-2.5 rounded-xl font-bold shadow">الطعام والشراب</button>
+                    <button onclick="renderAdhkar('travel')" class="bg-purple-800 text-white px-5 py-2.5 rounded-xl font-bold shadow">أذكار السفر</button>
+                    <button onclick="renderAdhkar('distress')" class="bg-rose-800 text-white px-5 py-2.5 rounded-xl font-bold shadow">أدعية الكرب والشفاء</button>
+                </div>
+                <div id="adhkar-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+        </section>
+
+        <!-- 4. Ruqyah Section (البث المباشر حصراً) -->
+        <section id="ruqyah" class="content-section section-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 border-t-8 border-islamic-gold">
+                <h2 class="text-3xl md:text-4xl font-bold text-islamic-green dark:text-islamic-brightgold mb-8 text-center amiri-text">إذاعة الرقية الشرعية المباشرة</h2>
+                
+                <div class="max-w-2xl mx-auto mb-10 bg-islamic-light dark:bg-slate-800 p-8 rounded-2xl border-2 border-islamic-gold shadow-lg flex flex-col items-center text-center">
+                    <i class="fas fa-broadcast-tower text-5xl text-islamic-gold animate-pulse mb-4"></i>
+                    <h3 class="text-2xl font-bold text-islamic-dark dark:text-white mb-2">إذاعة الرقية الشرعية المباشرة</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-6 font-semibold leading-relaxed">بث إيماني مباشر ومتواصل للرقية الشرعية والتحصينات النبوية المأثورة على مدار الساعة.</p>
+                    <audio id="ruqyah-live" controls class="w-full outline-none rounded-xl" preload="none">
+                        <source src="https://Qurango.net/radio/roqiah" type="audio/mpeg">
+                    </audio>
+                </div>
+
+                <div class="max-w-2xl mx-auto mb-8 p-6 bg-islamic-light dark:bg-slate-800 rounded-2xl"><h3 class="text-xl font-bold">الرقية الشرعية المسجلة</h3><p>تسجيل بصوت الشيخ مشاري العفاسي على يوتيوب.</p><a href="https://www.youtube.com/watch?v=SzahLVKaxfc" target="_blank" rel="noopener noreferrer" class="underline text-islamic-gold">استمع إلى التسجيل ↗</a></div>
+                <div class="bg-[#fdfbf7] dark:bg-slate-900 p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-inner text-right">
+                    <h3 class="text-2xl font-bold text-islamic-green dark:text-islamic-brightgold mb-4 border-b pb-2">آيات الرقية والتحصين المكتوبة</h3>
+                    <div class="space-y-6 amiri-text text-2xl leading-relaxed text-gray-800 dark:text-gray-100 text-justify">
+                        <p><b>سورة الفاتحة:</b> {الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ * الرَّحْمَٰنِ الرَّحِيمِ * مَالِكِ يَوْمِ الدِّينِ * إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ * اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ * صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ}</p>
+                        <p><b>آية الكرسي:</b> {اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ...}</p>
+                        <p><b>خواتيم سورة البقرة:</b> {آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ...}</p>
+                        <p><b>المعوذتان والإخلاص:</b> قُلْ هُوَ اللَّهُ أَحَدٌ، قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ، قُلْ أَعُوذُ بِرَبِّ النَّاسِ (تكرر 3 مرات)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<section id="hadith" class="content-section section-hidden"><div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 border-t-8 border-islamic-gold"><h2 class="text-3xl font-bold amiri-text text-center mb-8">أحاديث نبوية شريفة</h2><article class="p-6 mb-5 bg-islamic-light dark:bg-slate-800 rounded-xl"><p class="amiri-text text-2xl leading-loose">عن أمير المؤمنين عمر بن الخطاب رضي الله عنه قال: سمعت رسول الله ﷺ يقول: «إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى، فمن كانت هجرته إلى الله ورسوله فهجرته إلى الله ورسوله، ومن كانت هجرته لدنيا يصيبها أو امرأة ينكحها فهجرته إلى ما هاجر إليه».</p><a href="https://www.nawawiyya.sunnaonline.org/forty/hadith-1.htm" target="_blank" rel="noopener noreferrer" class="underline text-islamic-gold">متفق عليه — المصدر</a></article><article class="p-6 bg-islamic-light dark:bg-slate-800 rounded-xl"><p class="amiri-text text-2xl leading-loose">عن أبي هريرة رضي الله عنه قال: قال رسول الله ﷺ: «من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت، ومن كان يؤمن بالله واليوم الآخر فلا يؤذ جاره، ومن كان يؤمن بالله واليوم الآخر فليكرم ضيفه».</p><a href="https://ihadis.com/ar/bukhari/hadith/6475" target="_blank" rel="noopener noreferrer" class="underline text-islamic-gold">صحيح البخاري، ٦٤٧٥ — المصدر</a></article></div></section>
+        <!-- 5. Daily Habits Section -->
+        <section id="habits" class="content-section section-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 border-t-8 border-islamic-green">
+                <h2 class="text-3xl md:text-4xl font-bold text-islamic-green dark:text-islamic-brightgold mb-3 text-center amiri-text">الورد اليومي (حاسبوا أنفسكم)</h2>
+                <p class="text-center text-gray-600 dark:text-gray-400 mb-8 font-semibold">متابعة إيمانية وحفظ تلقائي لتقدمك وطاعاتك اليومية.</p>
+                <div class="max-w-2xl mx-auto space-y-4" id="habits-list"></div>
+            </div>
+        </section>
+
+        <!-- 6. Sebha Section -->
+        <section id="sebha" class="content-section section-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 border-t-8 border-islamic-green text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-islamic-green dark:text-islamic-brightgold mb-6 amiri-text">المسبحة الإلكترونية الذكية</h2>
+                <div class="max-w-xs mx-auto bg-islamic-light dark:bg-slate-800 p-8 rounded-3xl border-2 border-islamic-gold shadow-2xl">
+                    <div id="sebha-counter" class="text-7xl font-black text-islamic-green dark:text-islamic-brightgold mb-8 font-mono">0</div>
+                    <button onclick="countSebha()" class="sebha-btn w-36 h-36 rounded-full text-white font-bold text-3xl mx-auto block mb-6 flex items-center justify-center border-4 border-islamic-gold/40">سبّح</button>
+                    <button onclick="resetSebha()" class="text-sm text-red-500 font-bold underline">إعادة ضبط العداد</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Names of Allah Section (99 اسماً كاملة) -->
+        <section id="names" class="content-section section-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-6 md:p-8 border-t-8 border-islamic-green">
+                <h2 class="text-3xl md:text-4xl font-bold text-islamic-green dark:text-islamic-brightgold mb-2 text-center amiri-text">أسماء الله الحسنى الـ 99 كاملة</h2>
+                <p class="text-center text-gray-600 dark:text-gray-400 mb-8 font-bold">«إنَّ لِلَّهِ تِسْعَةً وَتِسْعِينَ اسْمًا مِائَةً إِلا وَاحِدًا مَنْ أَحْصَاهَا دَخَلَ الْجَنَّةَ»</p>
+                <div id="names-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 text-center"></div>
+            </div>
+        </section>
+
+        <!-- 8. Prayer Times Section (تنسيق 12 ساعة) -->
+        <section id="prayer" class="content-section section-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-6 md:p-10 border-t-8 border-islamic-green">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-5xl font-black text-islamic-green dark:text-islamic-brightgold mb-2 amiri-text">مواقيت الصلاة الدقيقة (تنسيق 12 ساعة)</h2>
+                    <p id="prayer-city" class="text-lg font-bold text-gray-600 dark:text-gray-300">جاري تحديد مدينتك وموقعك الجغرافي...</p>
+                </div>
+
+                <div class="max-w-2xl mx-auto mb-10 p-6 rounded-2xl bg-gradient-to-r from-islamic-green to-islamic-dark text-white shadow-xl border border-islamic-gold/50 flex flex-col sm:flex-row justify-between items-center text-center sm:text-right gap-4">
+                    <div>
+                        <div class="text-xs text-islamic-brightgold font-bold uppercase mb-1">الصلاة القادمة هي</div>
+                        <div id="next-prayer-name" class="text-3xl font-black amiri-text text-white">جاري الحساب...</div>
+                    </div>
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-islamic-gold/30">
+                        <div class="text-xs text-gray-300 mb-1">المتبقي على الأذان</div>
+                        <div id="next-prayer-timer" class="text-3xl font-mono font-bold text-islamic-brightgold">00:00:00</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6" id="prayer-times-container"></div>
+            </div>
+        </section>
+
+        <!-- 9. Qibla Section -->
+        <section id="qibla" class="content-section section-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 border-t-8 border-islamic-gold text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-islamic-green dark:text-islamic-brightgold mb-4 amiri-text">اتجاه القبلة الشريفة (GPS)</h2>
+                <p id="qibla-info" class="text-lg font-bold mb-4 text-gray-700 dark:text-gray-300">جاري الاتصال بـ GPS للحصول على إحداثيات موقعك...</p>
+
+                <div class="mb-6">
+                    <button onclick="getGPSQibla()" class="px-6 py-2.5 bg-islamic-green text-white font-bold rounded-xl shadow border border-islamic-gold hover:opacity-90">
+                        <i class="fas fa-location-crosshairs ml-2"></i>تحديث موقع الـ GPS الآن
+                    </button>
+                </div>
+
+                <div class="compass-bg mt-6">
+                    <div id="kaaba-pointer" class="kaaba-pointer"></div>
+                </div>
+                
+                <div id="qibla-degree" class="mt-6 text-xl font-bold text-islamic-gold">الزاوية المحسوبة: --°</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Script Application Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.currentSurahNum = 1;
+            document.getElementById('welcome-enter').addEventListener('click', () => { document.getElementById('welcome-screen').remove(); });
+            const rq = document.getElementById('ruqyah-live'); let rqBackup = false; rq.addEventListener('error', () => { if (!rqBackup) { rqBackup = true; rq.src = 'https://backup.qurango.net/radio/roqiah'; rq.load(); rq.play().catch(() => {}); } });
+
+            window.toggleDarkMode = function() {
+                document.documentElement.classList.toggle('dark');
+                const icon = document.getElementById('theme-icon');
+                if (document.documentElement.classList.contains('dark')) {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                } else {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                }
+            }
+
+            async function loadHijriDate() {
+                try {
+                    let res = await fetch('https://api.aladhan.com/v1/gToH');
+                    let data = await res.json();
+                    let h = data.data.hijri;
+                    document.getElementById('hijri-date-top').innerText = `${h.day} ${h.month.ar} ${h.year} هـ - الموافق ${data.data.gregorian.date}`;
+                } catch(e) {
+                    document.getElementById('hijri-date-top').innerText = 'الموافق للتقويم الهجري اليوم';
+                }
+            }
+            loadHijriDate();
+
+            const dailyDoaas = [
+                "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+                "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ",
+                "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي",
+                "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ",
+                "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ"
+            ];
+            const doaaElement = document.getElementById('daily-doaa');
+            function changeDoaa() {
+                doaaElement.innerText = dailyDoaas[Math.floor(Math.random() * dailyDoaas.length)];
+            }
+            changeDoaa();
+            setInterval(changeDoaa, 10000);
+
+            window.switchTab = function(tabId) {
+                document.querySelectorAll('.content-section').forEach(el => {
+                    el.classList.remove('section-active'); el.classList.add('section-hidden');
+                });
+                document.getElementById(tabId).classList.remove('section-hidden');
+                document.getElementById(tabId).classList.add('section-active');
+                document.getElementById('mobile-menu').classList.add('hidden');
+                
+                if (tabId === 'quran' && !window.loadedQuran) { loadSurahList(); window.loadedQuran = true; }
+                if (tabId === 'adhkar' && !window.loadedAdhkar) { renderAdhkar('morning'); window.loadedAdhkar = true; }
+                if (tabId === 'habits' && !window.loadedHabits) { renderHabits(); window.loadedHabits = true; }
+                if (tabId === 'prayer' && !window.loadedPrayer) { initPrayer(); window.loadedPrayer = true; }
+                if (tabId === 'names' && !window.loadedNames) { renderNames(); window.loadedNames = true; }
+                if (tabId === 'qibla' && !window.loadedQibla) { getGPSQibla(); window.loadedQibla = true; }
+            }
+
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+
+            function toArabicDigits(num) {
+                const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+                return num.toString().split('').map(c => arabicNumbers[c]).join('');
+            }
+
+            const reciterServers = {
+                "mishary": {name:"الشيخ مشاري راشد العفاسي (مرتل)", base:"https://server8.mp3quran.net/afs/"},
+                "ahmad_nu": {name:"الشيخ أحمد نعينع", base:"https://server11.mp3quran.net/ahmad_nu/"},
+                "refat": {name:"الشيخ محمد رفعت", base:"https://server14.mp3quran.net/refat/", suras:[1,10,11,12,17,18,19,20,48,54,55,56,69,72,73,75,76,77,78,79,81,82,83,85,86,87,88,89,96,98,100]},
+                "bna": {name:"الشيخ محمود علي البنا", base:"https://server8.mp3quran.net/bna/"},
+                "husr": { name: "الشيخ محمود خليل الحصري (مرتل)", base: "https://server13.mp3quran.net/husr/" },
+                "minsh": { name: "الشيخ محمد صديق المنشاوي (مرتل)", base: "https://server10.mp3quran.net/minsh/" },
+                "minsh_mjwd": { name: "الشيخ محمد صديق المنشاوي (مجود)", base: "https://server11.mp3quran.net/minsh_mjwd/" },
+                "basit": { name: "الشيخ عبد الباسط عبد الصمد (مرتل)", base: "https://server7.mp3quran.net/basit/" },
+                "basit_mjwd": { name: "الشيخ عبد الباسط عبد الصمد (مجود)", base: "https://server7.mp3quran.net/basit_mjwd/" },
+                "mustafa": { name: "الشيخ مصطفى إسماعيل (مجود)", base: "https://server8.mp3quran.net/mustafa/Almusshaf-Al-Mojawwad/" },
+                "sds": { name: "الشيخ عبد الرحمن السديس", base: "https://server11.mp3quran.net/sds/" },
+                "maher": { name: "الشيخ ماهر المعيقلي", base: "https://server12.mp3quran.net/maher/" },
+                "shur": { name: "الشيخ سعود الشريم", base: "https://server7.mp3quran.net/shur/" },
+                "yasser": { name: "الشيخ ياسر الدوسري", base: "https://server11.mp3quran.net/yasser/" }
+            };
+
+            async function loadSurahList() {
+                try {
+                    let res = await fetch('https://api.alquran.cloud/v1/surah');
+                    let data = await res.json();
+                    let select = document.getElementById('surah-select');
+                    select.innerHTML = '';
+                    data.data.forEach(s => select.innerHTML += `<option value="${s.number}">${s.number}. سورة ${s.name}</option>`);
+                    fetchSurah(1);
+                } catch (e) { document.getElementById('surah-select').innerHTML = '<option>خطأ بالاتصال</option>'; }
+            }
+
+            const quranPlayer = document.getElementById('quran-player');
+            const quranStatus = document.getElementById('quran-audio-status');
+
+            window.setQuranMode = function(mode) {
+                const recBtn = document.getElementById('quran-mode-rec');
+                const liveBtn = document.getElementById('quran-mode-live');
+                const recBox = document.getElementById('quran-rec-controls');
+                const liveBox = document.getElementById('quran-live-controls');
+
+                if (mode === 'recorded') {
+                    recBtn.className = "px-8 py-3 bg-islamic-green text-white font-bold rounded-2xl shadow-lg border-2 border-islamic-green";
+                    liveBtn.className = "px-8 py-3 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 font-bold rounded-2xl shadow";
+                    recBox.classList.remove('hidden');
+                    liveBox.classList.add('hidden');
+                    updateAudio();
+                } else {
+                    liveBtn.className = "px-8 py-3 bg-islamic-green text-white font-bold rounded-2xl shadow-lg border-2 border-islamic-green";
+                    recBtn.className = "px-8 py-3 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 font-bold rounded-2xl shadow";
+                    recBox.classList.add('hidden');
+                    liveBox.classList.remove('hidden');
+                    playQuranLive();
+                }
+            }
+
+            window.playQuranLive = function() {
+                let url = document.getElementById('quran-live-select').value;
+                quranStatus.innerText = "جاري الاتصال بالبث المباشر للقرآن الكريم...";
+                quranPlayer.src = url;
+                quranPlayer.load();
+                quranPlayer.play().catch(() => {});
+                quranPlayer.onplaying = () => { quranStatus.innerText = "يعمل البث الآن ✓"; }; quranPlayer.onerror = () => { quranStatus.innerText = "تعذر الاتصال بالبث."; };
+            }
+
+            window.updateAudio = function() {
+                let reciterKey = document.getElementById('reciter-select').value;
+                let reciterData = reciterServers[reciterKey];
+                if (!reciterData) return;
+
+                if (reciterData.suras && !reciterData.suras.includes(Number(window.currentSurahNum))) { quranPlayer.removeAttribute('src'); quranPlayer.load(); quranStatus.innerText = 'هذه السورة غير متاحة لهذا القارئ في المصدر.'; return; }
+                let paddedNum = window.currentSurahNum.toString().padStart(3, '0');
+                let targetUrl = `${reciterData.base}${paddedNum}.mp3`;
+                
+                quranStatus.innerText = `جاري استدعاء التلاوة بصوت (${reciterData.name})...`;
+                quranPlayer.src = targetUrl;
+                quranPlayer.load();
+                quranPlayer.onerror = () => { quranStatus.innerText = 'تعذر تشغيل التسجيل من المصدر. جرّب سورة أخرى أو لاحقاً.'; };
+                quranPlayer.oncanplay = function() {
+                    quranStatus.innerText = `التلاوة جاهزة بصوت (${reciterData.name}) ✓`;
+                };
+            }
+
+            window.fetchSurah = async function(num) {
+                window.currentSurahNum = num;
+                window.updateAudio();
+                let container = document.getElementById('ayahs-container');
+                let bismillah = document.getElementById('bismillah');
+                document.getElementById('surah-name').innerText = "جاري تحميل السورة...";
+                
+                try {
+                    let res = await fetch(`https://api.alquran.cloud/v1/surah/${num}/quran-uthmani`);
+                    let data = await res.json();
+                    let surah = data.data;
+                    document.getElementById('surah-name').innerText = `سُورَةُ ${surah.name.replace('سُورَةُ ', '')}`;
+                    bismillah.style.display = (num == 1 || num == 9) ? 'none' : 'block';
+
+                    let html = '';
+                    const bismillahRegex = /^بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\s?/g;
+                    surah.ayahs.forEach(ayah => {
+                        let txt = ayah.text;
+                        if (num != 1 && ayah.numberInSurah === 1) txt = txt.replace(bismillahRegex, '').trim();
+                        let arabicNum = toArabicDigits(ayah.numberInSurah);
+                        html += `${txt} <span class="ayah-number"><span>${arabicNum}</span></span> `;
+                    });
+                    container.innerHTML = html;
+                } catch (e) { container.innerHTML = '<span class="text-red-500">حدث خطأ أثناء تحميل النص القرآني</span>'; }
+            }
+
+            window.changeRadio = function() {
+                const radio = document.getElementById('global-radio');
+                radio.src = document.getElementById('radio-station').value;
+                radio.play().catch(() => {});
+            }
+
+            // موسوعة الأذكار
+            const adhkarDB = {
+                morning: [
+                    { t: "آية الكرسي: اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...", c: 1 },
+                    { t: "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له...", c: 1 },
+                    { t: "سُبْحَانَ اللهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ.", c: 3 },
+                    { t: "اللهم بك أصبحنا، وبك أمسينا، وبك نحيا، وبك نموت، وإليك النشور.", c: 1 },
+                    { t: "رضيت بالله رباً، وبالإسلام ديناً، وبمحمد صلى الله عليه وسلم نبياً.", c: 3 }
+                ],
+                evening: [
+                    { t: "آية الكرسي: اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...", c: 1 },
+                    { t: "أمسينَا وأمسى الملكُ لله، والحمدُ لله، لا إله إلا الله...", c: 1 },
+                    { t: "أعوذ بكلمات الله التامّات من شر ما خلق.", c: 3 },
+                    { t: "اللهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.", c: 1 },
+                    { t: "اللهم ما أمسى بي من نعمة أو بأحد من خلقك فمنك وحدك لا شريك لك.", c: 1 }
+                ],
+                post_prayer: [
+                    { t: "أستغفر الله، أستغفر الله، أستغفر الله.", c: 3 },
+                    { t: "اللهم أنت السلام ومنك السلام، تباركت يا ذا الجلال والإكرام.", c: 1 },
+                    { t: "سبحان الله (33) والحمد لله (33) والله أكبر (33)، ولا إله إلا الله وحده لا شريك له.", c: 1 },
+                    { t: "قراءة آية الكرسي عقب كل صلاة مكتوبة.", c: 1 }
+                ],
+                sleep: [
+                    { t: "باسمك ربي وضعت جنبي وبك أرفعه...", c: 1 },
+                    { t: "اللهم قني عذابك يوم تبعث عبادك.", c: 3 },
+                    { t: "قراءة سورة الإخلاص والمعوذتين، والنَفث في الكفين ومسح الجسد.", c: 3 },
+                    { t: "باسمك اللهم أموت وأحيا.", c: 1 }
+                ],
+                wake: [
+                    { t: "الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور.", c: 1 },
+                    { t: "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.", c: 1 }
+                ],
+                azan: [
+                    { t: "قول مثل ما يقول المؤذن تماماً إلا في 'حي على الصلاة وحي على الفلاح' فتقول: لا حول ولا قوة إلا بالله.", c: 1 },
+                    { t: "الصلاة على النبي صلى الله عليه وسلم بعد انتهاء الأذان.", c: 1 },
+                    { t: "اللهم رب هذه الدعوة التامة والصلاة القائمة، آت محمداً الوسيلة والفضيلة وابعثه مقاماً محموداً الذي وعدته.", c: 1 }
+                ],
+                mosque: [
+                    { t: "دعاء دخول المسجد: بسم الله، والصلاة والسلام على رسول الله، اللهم افتح لي أبواب رحمتك.", c: 1 },
+                    { t: "دعاء الخروج من المسجد: بسم الله، والصلاة والسلام على رسول الله، اللهم إني أسألك من فضلك.", c: 1 }
+                ],
+                food: [
+                    { t: "التسمية قبل الطعام والشراب: 'بسم الله'.", c: 1 },
+                    { t: "الذكر عند الفراغ من الطعام: 'الحمد لله الذي أطعمني هذا ورزقنيه من غير حول مني ولا قوة'.", c: 1 }
+                ],
+                travel: [
+                    { t: "الله أكبر، الله أكبر، الله أكبر، سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ.", c: 1 },
+                    { t: "اللهم إنا نسألك في سفرنا هذا البر والتقوى، ومن العمل ما ترضى.", c: 1 }
+                ],
+                distress: [
+                    { t: "لا إله إلا أنت سبحانك إني كنت من الظالمين.", c: 3 },
+                    { t: "حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم.", c: 7 },
+                    { t: "اللهم رب الناس أذهب البأس، اشفِ وأنت الشافي، لا شفاء إلا شفاؤك.", c: 3 }
+                ]
+            };
+
+            window.renderAdhkar = function(type) {
+                let container = document.getElementById('adhkar-container');
+                container.innerHTML = '';
+                (adhkarDB[type] || adhkarDB.morning).forEach(d => {
+                    container.innerHTML += `
+                        <div class="dhikr-card bg-islamic-light dark:bg-slate-800 p-6 rounded-2xl border border-islamic-green/20 flex flex-col items-center justify-between text-center shadow">
+                            <p class="amiri-text text-2xl leading-relaxed mb-6 font-bold text-gray-800 dark:text-gray-100">${d.t}</p>
+                            <button onclick="clickDhikr(this)" data-count="${d.c}" class="w-16 h-16 rounded-full bg-islamic-green dark:bg-islamic-gold text-white dark:text-slate-900 font-bold text-2xl shadow-lg border-2 border-islamic-gold">
+                                ${d.c}
+                            </button>
+                        </div>`;
+                });
+            }
+
+            window.clickDhikr = function(btn) {
+                let count = parseInt(btn.getAttribute('data-count'));
+                if (count > 0) {
+                    count--; btn.setAttribute('data-count', count); btn.innerText = count;
+                    playClickSound();
+                    if (count === 0) {
+                        btn.innerHTML = '<i class="fas fa-check"></i>';
+                        btn.parentElement.classList.add('dhikr-done');
+                    }
+                }
+            }
+
+            window.renderHabits = function() {
+                const habits = [
+                    "أداء صلاة الفجر في وقتها",
+                    "قراءة أذكار الصباح والمساء",
+                    "قراءة ورد من القرآن الكريم",
+                    "أداء صلاة الضحى",
+                    "الاستغفار والتسبيح 100 مرة",
+                    "صلاة الوتر قبل النوم"
+                ];
+                let container = document.getElementById('habits-list');
+                container.innerHTML = '';
+                let saved = JSON.parse(localStorage.getItem('islamic_habits_today') || '{}');
+
+                habits.forEach((h, index) => {
+                    let checked = saved[index] ? 'checked' : '';
+                    container.innerHTML += `
+                        <label class="flex items-center p-4 bg-islamic-light dark:bg-slate-800 rounded-2xl border border-islamic-green/20 cursor-pointer shadow-sm">
+                            <input type="checkbox" ${checked} onchange="toggleHabit(${index}, this.checked)" class="w-6 h-6 text-islamic-green rounded">
+                            <span class="mr-4 text-xl font-bold text-gray-800 dark:text-gray-200">${h}</span>
+                        </label>`;
+                });
+            }
+
+            window.toggleHabit = function(index, status) {
+                let saved = JSON.parse(localStorage.getItem('islamic_habits_today') || '{}');
+                saved[index] = status;
+                localStorage.setItem('islamic_habits_today', JSON.stringify(saved));
+            }
+
+            // الصوت الخاص بالتسبيح والعدادات
+            function playClickSound() {
+                try {
+                    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.12);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.12);
+                } catch(e){}
+            }
+
+            let sebhaCount = localStorage.getItem('sebha_counter_val') ? parseInt(localStorage.getItem('sebha_counter_val')) : 0;
+            updateSebhaDisplays();
+
+            function updateSebhaDisplays() {
+                if (document.getElementById('sebha-counter')) document.getElementById('sebha-counter').innerText = sebhaCount;
+                if (document.getElementById('home-sebha-counter')) document.getElementById('home-sebha-counter').innerText = sebhaCount;
+            }
+
+            window.countSebha = function() {
+                sebhaCount++;
+                updateSebhaDisplays();
+                localStorage.setItem('sebha_counter_val', sebhaCount);
+                playClickSound();
+            }
+
+            window.resetSebha = function() {
+                sebhaCount = 0;
+                updateSebhaDisplays();
+                localStorage.setItem('sebha_counter_val', 0);
+            }
+
+            // قائمة أسماء الله الحسنى الـ 99 كاملة
+            const all99Names = [
+                "الرَّحْمَنُ", "الرَّحِيمُ", "الْمَلِكُ", "الْقُدُّوسُ", "السَّلَامُ", "الْمُؤْمِنُ", "الْمُهَيْمِنُ", "الْعَزِيزُ", "الْجَبَّارُ", "الْمُتَكَبِّرُ",
+                "الْخَالِقُ", "الْبَارِئُ", "الْمُصَوِّرُ", "الْغَفَّارُ", "الْقَهَّارُ", "الْوَهَّابُ", "الرَّزَّاقُ", "الْفَتَّاحُ", "الْعَلِيمُ", "الْقَابِضُ",
+                "الْبَاسِطُ", "الْخَافِضُ", "الرَّافِعُ", "الْمُعِزُّ", "الْمُذِلُّ", "السَّمِيعُ", "الْبَصِيرُ", "الْحَكَمُ", "الْعَدْلُ", "اللَّطِيفُ",
+                "الْخَبِيرُ", "الْحَلِيمُ", "الْعَظِيمُ", "الْغَفُورُ", "الشَّكُورُ", "الْعَلِيُّ", "الْكَبِيرُ", "الْحَفِيظُ", "الْمُقِيتُ", "الْحَسِيبُ",
+                "الْجَلِيلُ", "الْكَرِيمُ", "الرَّقِيبُ", "الْمُجِيبُ", "الْوَاسِعُ", "الْحَكِيمُ", "الْوَدُودُ", "الْمَجِيدُ", "الْبَاعِثُ", "الشَّهِيدُ",
+                "الْحَقُّ", "الْوَكِيلُ", "الْقَوِيُّ", "الْمَتِينُ", "الْوَلِيُّ", "الْحَمِيدُ", "الْمُحْصِي", "الْمُبْدِئُ", "الْمُعِيدُ", "الْمُحْيِي",
+                "الْمُمِيتُ", "الْحَيُّ", "الْقَيُّومُ", "الْوَاجِدُ", "الْمَاجِدُ", "الْوَاحِدُ", "الْأَحَدُ", "الصَّمَدُ", "الْقَادِرُ", "الْمُقْتَدِرُ",
+                "الْمُقَدِّمُ", "الْمُؤَخِّرُ", "الْأَوَّلُ", "الْآخِرُ", "الظَّاهِرُ", "الْبَاطِنُ", "الْوَالِي", "الْمُتَعَالِي", "الْبَرُّ", "التَّوَّابُ",
+                "الْمُنْتَقِمُ", "الْعَفُوُّ", "الرَّؤُوفُ", "مَالِكُ الْمُلْكِ", "ذُو الْجَلَالِ وَالْإِكْرَامِ", "الْمُقْسِطُ", "الْجَامِعُ", "الْغَنِيُّ", "الْمُغْنِي", "الْمَانِعُ",
+                "الضَّارُّ", "النَّافِعُ", "النُّورُ", "الْهَادِي", "الْبَدِيعُ", "الْبَاقِي", "الْوَارِثُ", "الرَّشِيدُ", "الصَّبُورُ"
+            ];
+
+            window.renderNames = function() {
+                let container = document.getElementById('names-container');
+                container.innerHTML = '';
+                all99Names.forEach((name, index) => {
+                    container.innerHTML += `
+                        <div class="bg-islamic-light dark:bg-slate-800 border border-islamic-green/20 dark:border-slate-700 rounded-xl p-3 shadow-sm hover:scale-105 transition-transform flex flex-col items-center justify-center">
+                            <span class="text-[10px] text-islamic-gold font-bold mb-1">${index + 1}</span>
+                            <span class="amiri-text font-bold text-lg text-islamic-green dark:text-islamic-brightgold">${name}</span>
+                        </div>`;
+                });
+            }
+
+            // تحويل التنسيق إلى 12 ساعة (ص / م)
+            function convertTo12Hour(time24) {
+                let [h, m] = time24.split(':').map(Number);
+                let period = h >= 12 ? 'م' : 'ص';
+                h = h % 12;
+                h = h ? h : 12; 
+                return `${h}:${m.toString().padStart(2, '0')} ${period}`;
+            }
+
+            window.initPrayer = function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(pos => {
+                        fetchPrayers(pos.coords.latitude, pos.coords.longitude);
+                    }, () => fetchPrayers(30.0444, 31.2357)); 
+                } else fetchPrayers(30.0444, 31.2357);
+            }
+
+            async function fetchPrayers(lat, lng) {
+                try {
+                    let res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=5`);
+                    let data = await res.json();
+                    let timings = data.data.timings;
+                    
+                    document.getElementById('prayer-city').innerText = `المواقيت المحسوبة بدقة لموقعك الجغرافي`;
+                    
+                    const prayersList = [
+                        {id:'Fajr', n:'الفجر', icon:'fa-cloud-sun'}, 
+                        {id:'Sunrise', n:'الشروق', icon:'fa-sun'}, 
+                        {id:'Dhuhr', n:'الظهر', icon:'fa-sun'}, 
+                        {id:'Asr', n:'العصر', icon:'fa-cloud-sun-rain'}, 
+                        {id:'Maghrib', n:'المغرب', icon:'fa-moon'}, 
+                        {id:'Isha', n:'العشاء', icon:'fa-stars'}
+                    ];
+
+                    let now = new Date();
+                    let currentTime = now.getHours() * 60 + now.getMinutes();
+                    let nextPrayerIndex = -1;
+
+                    let html = '';
+                    prayersList.forEach((p, idx) => {
+                        let [h, m] = timings[p.id].split(':').map(Number);
+                        let pTime = h * 60 + m;
+
+                        if (pTime > currentTime && nextPrayerIndex === -1 && p.id !== 'Sunrise') {
+                            nextPrayerIndex = idx;
+                        }
+
+                        let time12 = convertTo12Hour(timings[p.id]);
+
+                        html += `
+                            <div id="card-prayer-${idx}" class="prayer-card p-5 rounded-2xl border border-gray-200 dark:border-slate-800 text-center shadow-md flex flex-col justify-between items-center">
+                                <i class="fas ${p.icon} text-2xl text-islamic-gold mb-2"></i>
+                                <h4 class="font-bold text-lg mb-1">${p.n}</h4>
+                                <div class="text-2xl font-black font-mono tracking-tight my-2">${time12}</div>
+                            </div>`;
+                    });
+
+                    document.getElementById('prayer-times-container').innerHTML = html;
+
+                    if (nextPrayerIndex !== -1) {
+                        let activeCard = document.getElementById(`card-prayer-${nextPrayerIndex}`);
+                        if (activeCard) activeCard.classList.add('prayer-card-active');
+                        document.getElementById('next-prayer-name').innerText = prayersList[nextPrayerIndex].n;
+                        
+                        let [nH, nM] = timings[prayersList[nextPrayerIndex].id].split(':').map(Number);
+                        startPrayerTimer(nH, nM);
+                    } else {
+                        document.getElementById('next-prayer-name').innerText = 'الفجر (غداً)';
+                        let [nH, nM] = timings['Fajr'].split(':').map(Number);
+                        startPrayerTimer(nH + 24, nM);
+                    }
+
+                } catch (e) { document.getElementById('prayer-city').innerText = 'تعذر جلب مواقيت الصلاة الحالية'; }
+            }
+
+            function startPrayerTimer(targetHour, targetMinute) {
+                setInterval(() => {
+                    let now = new Date();
+                    let target = new Date();
+                    target.setHours(targetHour, targetMinute, 0, 0);
+                    
+                    let diff = target - now;
+                    if (diff > 0) {
+                        let hours = Math.floor(diff / (1000 * 60 * 60));
+                        let mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        let secs = Math.floor((diff % (1000 * 60)) / 1000);
+                        
+                        document.getElementById('next-prayer-timer').innerText = 
+                            `${hours.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+                    }
+                }, 1000);
+            }
+
+            window.getGPSQibla = function() {
+                const qiblaInfo = document.getElementById('qibla-info');
+                const kaabaPointer = document.getElementById('kaaba-pointer');
+                const qiblaDegree = document.getElementById('qibla-degree');
+
+                if (navigator.geolocation) {
+                    qiblaInfo.innerText = "جاري قراءة الإحداثيات الجغرافية عبر الـ GPS...";
+                    navigator.geolocation.getCurrentPosition(pos => {
+                        let userLat = pos.coords.latitude;
+                        let userLng = pos.coords.longitude;
+
+                        let kaabaLat = 21.422487;
+                        let kaabaLng = 39.826206;
+
+                        let y = Math.sin((kaabaLng - userLng) * Math.PI / 180);
+                        let x = Math.cos(userLat * Math.PI / 180) * Math.tan(kaabaLat * Math.PI / 180) -
+                                Math.sin(userLat * Math.PI / 180) * Math.cos((kaabaLng - userLng) * Math.PI / 180);
+                        
+                        let qiblaAngle = Math.atan2(y, x) * 180 / Math.PI;
+                        if (qiblaAngle < 0) qiblaAngle += 360;
+
+                        kaabaPointer.style.transform = `translateX(-50%) rotate(${qiblaAngle}deg)`;
+                        qiblaInfo.innerText = "تم تحديد اتجاه القبلة بنجاح بناءً على موقعك الجغرافي Mapped GPS ✓";
+                        qiblaDegree.innerText = `الزاوية المحسوبة باتجاه الكعبة المشرفة: ${qiblaAngle.toFixed(1)}°`;
+                    }, () => {
+                        qiblaInfo.innerText = "تعذر الحصول على موقع الـ GPS، يرجى تفعيل إذن الموقع في متصفحك.";
+                    });
+                } else {
+                    qiblaInfo.innerText = "خاصية GPS غير مدعومة في جهازك الحالي.";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
